@@ -2,37 +2,48 @@ const express = require('express');
 
 const server = express();
 
-server.get('/login', ()=>{
-    console.log('Você está tentando acessar a página login');
+const path = require('path');
+
+server.get('/login', (req, res)=>{
+    res.sendFile(path.join(__dirname+'Projeto-WEB-main\login.html'));
 })
 
-server.get('/registrar', ()=>{
-    console.log('Você está tentando acessar a página de registro');
+server.get('/registrar', (req, res)=>{
+    res.sendFile(path.join(__dirname+'Projeto-WEB-main\registrar.html'));
 })
 
-server.get('/esqueceuSenha', ()=>{
-    console.log('Você está tentando acessar a página de registro');
+server.get('/estoque', (req, res)=>{
+    res.sendFile(path.join(__dirname+'Projeto-WEB-main\estoque.html'));
 })
 
-server.get('/index', ()=>{
-    console.log('Você está tentando acessar a página de inicial');
+server.get('/esqueceuSenha', (req, res)=>{
+    res.sendFile(path.join(__dirname+'Projeto-WEB-main\esqueceuSenha.html'));
 })
 
-server.get('/perfil', ()=>{
-    console.log('Você está tentando acessar a página de perfil');
+server.get('/perfil', (req, res)=>{
+    res.sendFile(path.join(__dirname+'Projeto-WEB-main\perfil.html'));
 })
 
-server.get('/tarefas', ()=>{
-    console.log('Você está tentando acessar a página de tarefas');
+server.get('/tarefas', (req, res)=>{
+    res.sendFile(path.join(__dirname+'Projeto-WEB-main\tarefas.html'));
 })
 
-server.get('/produtos', ()=>{
-    console.log('Você está tentando acessar a página de produtos');
+server.get('/produtos', (req, res)=>{
+    res.sendFile(path.join(__dirname+'Projeto-WEB-main\produtos.html'));
 })
 
-server.get('/categorias', ()=>{
-    console.log('Você está tentando acessar a página de categorias');
+server.get('/categorias', (req, res)=>{
+    res.sendFile(path.join(__dirname+'Projeto-WEB-main\categorias.html'));
 })
 
+server.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname+'Projeto-WEB-main\index.html'));
+
+})
+
+server.get('/tarefas', (req, res) =>{
+    res.sendFile(path.join(__dirname+'Projeto-WEB-main\tarefas.html'));
+
+})
 
 server.listen(3000)
