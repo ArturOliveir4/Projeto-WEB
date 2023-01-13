@@ -5,7 +5,7 @@ const path = require('path');
 (async () => {
     const database = require('./db');
     const Perfil = require('./perfis');
-    const Ctegoria = require('./Categoria');
+    const Categoria = require('./Categoria');
     const Perfil = require('./Produto');
 
     try {
