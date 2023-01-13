@@ -5,6 +5,8 @@ const path = require('path');
 (async () => {
     const database = require('./db');
     const Perfil = require('./perfis');
+    const Ctegoria = require('./Categoria');
+    const Perfil = require('./Produto');
 
     try {
         const resultado = await database.sync();
