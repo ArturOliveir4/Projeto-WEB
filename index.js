@@ -1,150 +1,120 @@
 const express = require('express');
 const server = express();
 const path = require('path');
+const bodyParser = require('body-parser');
+const database = require('./db');
+const Perfil = require('./perfis');
+const Categoria = require('./Categoria');
+const Produto = require('./Produto');
+
+const alert = require('alert');
+
+server.use(bodyParser.json());
+server.use(bodyParser.urlencoded({
+    extended: true
+}));
 
 (async () => {
-    const database = require('./db');
-    const Perfil = require('./perfis');
 
     try {
         const resultado = await database.sync();
         console.log(resultado);
-
-
-        const resultadoCreate = await Perfil.create({
-            nome: 'luciano 6',
-            sobrenome: 'alexandre',
-            telefone: '99999999',
-            bairro: 'bairro teste',
-            rua: 'rua teste',
-            cep: '5900000',
-            estado: 'PB',
-            email: 'luciano.silva@ifpb.edu.br',
-            pais: 'BRASIL',
-            login: 'luciano',
-            senha: 'senha123'
-        })
-
-        const resultadoCreate2 = await Perfil.create({
-            nome: 'luciano 5',
-            sobrenome: 'alexandre',
-            telefone: '99999999',
-            bairro: 'bairro teste',
-            rua: 'rua teste',
-            cep: '5900000',
-            estado: 'PB',
-            email: 'luciano.silva@ifpb.edu.br',
-            pais: 'BRASIL',
-            login: 'luciano',
-            senha: 'senha123'
-        })
-
-        console.log(resultadoCreate);
-        console.log(resultadoCreate2);
-
     } catch (error) {
         console.log(error);
     }
 })();
 
-(async () => {
-    const database = require('./db');
-    const Perfil = require('./Categoria');
+var createPerfil = {};
+server.post('/salvarPerfil', async (req, res) => {
+    const createPerfil = await Perfil.create({
+        nome: req.body.nome,
+        sobrenome: req.body.sobrenome,
+        telefone: req.body.telefone,
+        bairro: req.body.bairro,
+        rua: req.body.rua,
+        cep: req.body.cep,
+        estado: req.body.estado,
+        email: req.body.email,
+        pais: req.body.pais,
+        login: req.body.login,
+        senha: req.body.senha
+    });
+    console.log(createPerfil);
 
-    try {
-        const resultado = await database.sync();
-        console.log(resultado);
+    res.sendFile(path.join(__dirname + '/public/pages/index.html'));
+})
+
+var createProduto = {};
+server.post('/salvarProduto', async (req, res) => {
+    const createProduto = await Produto.create({
+        nome: req.body.nome,
+        categoria: req.body.categoria,
+        descricao: req.body.descricao,
+        preco: req.body.preco,
+        desconto: req.body.desconto,
+        quantidade: req.body.quantidade,
+        status: req.body.status,
+        dataCadastro: req.body.dataCadastro
+    });
+    console.log(createProduto);
+
+    res.sendFile(path.join(__dirname + '/index.html'));
+})
+
+var createCategoria = {};
+server.post('/salvarProduto', async (req, res) => {
+    const createCategoria = await Categoria.create({
+        nome: req.body.nome,
+        descricao: req.body.descricao
+    });
+    console.log(createCategoria);
+
+    res.sendFile(path.join(__dirname + '/index.html'));
+})
 
 
-        const resultadoCreate = await Perfil.create({
-            nome: 'Decoração',
-            descricao: 'Fundamentais para uma boa ambientação'
-        })
+server.post('/logar', async (req, res) => {
+    const selectUsuario = await Perfil.findOne({
+        where: {
+            login: req.body.username,
+            senha: req.body.password
+        }
+    });
 
-        const resultadoCreate2 = await Perfil.create({
-            nome: 'Eletrônicos',
-            descricao: 'Essenciais para a vida moderna'
-        })
+    if (selectUsuario !== null) {
+        res.sendFile(path.join(__dirname + '/index.html'));
+    } else {
+        alert("Login ou senha incorretos!");
 
-        console.log(resultadoCreate);
-        console.log(resultadoCreate2);
-
-    } catch (error) {
-        console.log(error);
+        res.sendFile(path.join(__dirname + '/login.html'));
     }
-})();
 
-(async () => {
-    const database = require('./db');
-    const Perfil = require('./Produto');
-
-    try {
-        const resultado = await database.sync();
-        console.log(resultado);
-
-
-        const resultadoCreate = await Perfil.create({
-            nome: 'Teclado',
-            categoria: 'Eletrônicos',
-            descricao: 'Componente essencial para entrada de dados',
-            categoria: 'Eletrônicos',
-            preco: 90,
-            desconto: 0,
-            quantidade: 5,
-            status: "Disponível",
-            dataCadastro: "13/01/2022"
-
-        })
-
-
-        console.log(resultadoCreate);
-
-    } catch (error) {
-        console.log(error);
-    }
-})();
-
-
-server.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname + 'Projeto-WEB-main\login.html'));
 })
 
-server.get('/registrar', (req, res) => {
-    res.sendFile(path.join(__dirname + 'Projeto-WEB-main\registrar.html'));
-})
-
-server.get('/estoque', (req, res) => {
-    res.sendFile(path.join(__dirname + 'Projeto-WEB-main\estoque.html'));
-})
-
-server.get('/esqueceuSenha', (req, res) => {
-    res.sendFile(path.join(__dirname + 'Projeto-WEB-main\esqueceuSenha.html'));
+server.get('/listarUsuarios', async (req, res) => {
+    const usuarios = await Perfil.findAll();
+    console.log(usuarios);
 })
 
 server.get('/perfil', (req, res) => {
-    res.sendFile(path.join(__dirname + 'Projeto-WEB-main\perfil.html'));
-})
-
-server.get('/tarefas', (req, res) => {
-    res.sendFile(path.join(__dirname + 'Projeto-WEB-main\tarefas.html'));
-})
-
-server.get('/produtos', (req, res) => {
-    res.sendFile(path.join(__dirname + 'Projeto-WEB-main\produtos.html'));
-})
-
-server.get('/categorias', (req, res) => {
-    res.sendFile(path.join(__dirname + 'Projeto-WEB-main\categorias.html'));
+    res.sendFile(path.join(__dirname + '/public/pages/perfil.html'));
 })
 
 server.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname + 'Projeto-WEB-main\index.html'));
-
+    res.sendFile(path.join(__dirname + '/public/pages/login.html'));
 })
 
 server.get('/tarefas', (req, res) => {
-    res.sendFile(path.join(__dirname + 'Projeto-WEB-main\tarefas.html'));
-
+    res.sendFile(path.join(__dirname + '/public/pages/tarefas.html'));
 })
+
+server.get('/register', (req, res) => {
+    res.sendFile(path.join(__dirname + '/public/pages/perfil.html'));
+})
+
+server.get('/home', (req, res) => {
+    res.sendFile(path.join(__dirname + '/public/pages/home.html'));
+})
+
 
 server.listen(3000)

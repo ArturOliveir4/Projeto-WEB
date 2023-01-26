@@ -1,19 +1,21 @@
 {
-  "dependencies": {
-    "express": "^4.18.2",
-    "node": "^19.3.0"
-  },
-  "name": "projeto-web-main-(1)",
+  "name": "projeto_web_matutino",
   "version": "1.0.0",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1", 
+    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "dependencies": {
+    "alert": "^5.1.4",
+    "express": "^4.18.2",
+    "sequelize": "^6.28.0",
+    "sqlite3": "^5.1.4"
+  },
   "devDependencies": {
     "nodemon": "^2.0.20"
   }
